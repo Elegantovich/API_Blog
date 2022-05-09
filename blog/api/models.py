@@ -11,7 +11,7 @@ class User(AbstractUser):
         )
     first_name = models.CharField(
         max_length=100,
-        verbose_name='Name of user'
+        verbose_name='Name of user',
         blank=True,
         null=True
         )
