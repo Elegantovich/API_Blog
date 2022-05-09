@@ -9,6 +9,12 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
 
 
+class AuthSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = ('username', 'password')
+        model = User
+
 class BlogSerializer(serializers.ModelSerializer):
 
     class Meta:
