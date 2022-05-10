@@ -6,7 +6,7 @@ router = DefaultRouter()
 router.register('blogs',
                 BlogViewSet
                 )
-router.register(r'blogs/(?P<title_id>[\d+]+)/posts',
+router.register(r'blogs/(?P<blog_id>[\d+]+)/posts',
                 PostViewSet,
                 basename='posts'
                 )

@@ -63,10 +63,11 @@ class Blog(models.Model):
     author = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
-        related_name='recipes',
+        related_name='blog',
         verbose_name='Author of blog'
         )
-    description = models.TextField(
+    description = models.CharField(
+        max_length=500,
         verbose_name='Description of blog',
         blank=True,
         null=True
@@ -87,6 +88,7 @@ class Post(models.Model):
         verbose_name='Heading of post',
         )
     text = models.TextField(
+        max_length=140,
         verbose_name='text of post'
         )
     date_create = models.DateTimeField(
