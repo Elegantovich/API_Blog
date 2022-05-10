@@ -4,6 +4,10 @@ from django.db import models
 
 class User(AbstractUser):
 
+    id = models.AutoField(
+        primary_key=True,
+        verbose_name='Unique number'
+    )
     username = models.CharField(
         unique=True,
         max_length=30,
@@ -28,7 +32,6 @@ class User(AbstractUser):
     is_subscribed = models.BooleanField(
         default=False,
         verbose_name='Subscribe to user',
-
         )
     User = 'user'
     Admin = 'admin'
@@ -52,6 +55,11 @@ class User(AbstractUser):
 
 
 class Blog(models.Model):
+
+    id = models.AutoField(
+        primary_key=True,
+        verbose_name='Unique number'
+    )
     author = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
@@ -65,10 +73,15 @@ class Blog(models.Model):
         )
 
     def __str__(self):
-        return self.description
+        return str(self.id)
 
 
 class Post(models.Model):
+
+    id = models.AutoField(
+        primary_key=True,
+        verbose_name='Unique number'
+    )
     heading = models.CharField(
         max_length=100,
         verbose_name='Heading of post',
@@ -77,6 +90,7 @@ class Post(models.Model):
         verbose_name='text of post'
         )
     date_create = models.DateTimeField(
+        auto_now_add=True,
         verbose_name='Date of create post'
         )
     blog = models.ForeignKey(
