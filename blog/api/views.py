@@ -1,4 +1,3 @@
-from tabnanny import check
 from rest_framework import status, viewsets, mixins
 from rest_framework.views import APIView
 from .models import Post, User, Blog
@@ -14,9 +13,15 @@ from .constant import MESSAGE
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = (AuthorOrAdminOrReadonly,)
     serializer_class = PostSerializer
-    queryset = Post.objects.all()
     lookup_field = 'pk'
 
+    def get_queryset(self):
+        blog = get_object_or_404(Blog, id=self.kwargs.get('blog_id'))
+        return blog.posts.all()
+
+    def perform_create(self, serializer):
+        blog = Blog.objects.get(author=self.request.user)
+        serializer.save(blog=blog)
 
 class ListRetrieveViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
                           mixins.UpdateModelMixin, viewsets.GenericViewSet):
