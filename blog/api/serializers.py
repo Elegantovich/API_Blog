@@ -1,4 +1,4 @@
-from .models import Post, User, Blog
+from .models import Follow, Post, User, Blog
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 from django.contrib.auth.hashers import check_password
@@ -18,7 +18,7 @@ class BlogSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
 
     class Meta:
-        fields = ('author', 'description')
+        fields = ('id', 'author', 'description')
         model = Blog
 
 
@@ -30,3 +30,13 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         exclude = ('date_create',)
         model = Post
+
+
+class FollowsSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer(read_only=True)
+    blog = BlogSerializer()
+
+    class Meta:
+        model = Follow
+        fields = ('user', 'blog')
