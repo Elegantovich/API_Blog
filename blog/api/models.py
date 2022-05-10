@@ -29,10 +29,6 @@ class User(AbstractUser):
         verbose_name='Password of account',
         max_length=100
         )
-    is_subscribed = models.BooleanField(
-        default=False,
-        verbose_name='Subscribe to user',
-        )
     User = 'user'
     Admin = 'admin'
 
@@ -100,6 +96,10 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         related_name='posts',
         verbose_name='Blog'
+        )
+    is_read = models.BooleanField(
+        default=False,
+        verbose_name='Set flag about reading the post',
         )
 
     def __str__(self):
