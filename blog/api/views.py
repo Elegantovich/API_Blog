@@ -9,7 +9,7 @@ from rest_framework.generics import get_object_or_404
 from django.contrib.auth.hashers import check_password
 from .permissions import AuthorOrAdminOrReadonly
 from .constant import MESSAGE
-
+from .pagination import CustomPagination
 
 class PostViewSet(viewsets.ModelViewSet):
     """
@@ -43,7 +43,7 @@ class BlogViewSet(ListRetrieveViewSet):
     lookup_field = 'pk'
 
 
-class NewsViewSet(APIView):
+class NewsViewSet(APIView, CustomPagination):
     """
     Get favorite posts.
     """
@@ -55,8 +55,9 @@ class NewsViewSet(APIView):
             for item in posts:
                 post = get_object_or_404(Post, id=item.id)
                 posts_list.append(post)
-        serializer = PostSerializer(posts_list, many=True)
-        return Response(serializer.data)
+        results = self.paginate_queryset(posts_list, request, view=self)
+        serializer = PostSerializer(results, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
 
