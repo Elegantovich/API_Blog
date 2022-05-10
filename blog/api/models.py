@@ -104,3 +104,23 @@ class Post(models.Model):
 
     def __str__(self):
         return self.heading
+
+
+class Follow(models.Model):
+    id = models.AutoField(
+        primary_key=True,
+        verbose_name='Unique number'
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name='Follower',
+        related_name='follower'
+        )
+    blog = models.ForeignKey(
+        Blog,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name='Blog',
+        related_name='following')
