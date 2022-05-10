@@ -18,7 +18,7 @@ class BlogSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
 
     class Meta:
-        fields = ('id', 'author', 'description')
+        fields = ('id', 'author', 'description', 'is_subscribed')
         model = Blog
 
 

@@ -43,6 +43,23 @@ class BlogViewSet(ListRetrieveViewSet):
     lookup_field = 'pk'
 
 
+class NewsViewSet(APIView):
+    """
+    Get favorite posts.
+    """
+    def get(self, request):
+        blogs = Blog.objects.filter(following__user=request.user)
+        posts_list = []
+        for i in blogs:
+            posts = i.posts.all()
+            for item in posts:
+                post = get_object_or_404(Post, id=item.id)
+                posts_list.append(post)
+        serializer = PostSerializer(posts_list, many=True)
+        return Response(serializer.data)
+
+
+
 def get_tokens_for_user(user):
     """
     Create token.
