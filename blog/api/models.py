@@ -2,6 +2,13 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
+class Date(models.Model):
+    date = models.DateField(
+        auto_now_add=True,
+        verbose_name='Date of create post'
+        )
+
+
 class User(AbstractUser):
 
     id = models.AutoField(
@@ -107,10 +114,6 @@ class Post(models.Model):
 
 
 class Follow(models.Model):
-    id = models.AutoField(
-        primary_key=True,
-        verbose_name='Unique number'
-    )
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -124,3 +127,19 @@ class Follow(models.Model):
         null=True,
         verbose_name='Blog',
         related_name='following')
+
+
+class Read(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name='user',
+        related_name='User'
+        )
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name='Read posts',
+        related_name='Read_posts')
