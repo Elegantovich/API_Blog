@@ -11,8 +11,9 @@ from .permissions import AuthorOrAdminOrReadonly
 from .constant import MESSAGE
 from .pagination import CustomPagination
 from blog.sent_mail import send_message_to_mail
-
+from rest_framework.permissions import AllowAny
 from datetime import datetime
+from rest_framework.decorators import permission_classes as permission
 
 now = datetime.now().strftime("%Y-%m-%d")
 
@@ -50,7 +51,6 @@ class BlogViewSet(ListRetrieveViewSet):
     """
     Get info by all blogs and update your blog.
     """
-    permission_classes = (AuthorOrAdminOrReadonly,)
     serializer_class = BlogSerializer
     queryset = Blog.objects.all()
     lookup_field = 'pk'
@@ -94,6 +94,7 @@ class RecieveToken(APIView):
     """
     Recieve token for authorization and create blog.
     """
+    permission_classes = [AllowAny]
     def post(self, request):
         try:
             username = request.data['username']
