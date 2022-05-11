@@ -1,7 +1,8 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from .views import (RecieveToken, PostViewSet, BlogViewSet, FollowView,
-                    NewsView, ReadView)
+
+from .views import (BlogViewSet, FollowView, NewsView, PostViewSet, ReadView,
+                    RecieveToken)
 
 router = DefaultRouter()
 router.register('blogs', BlogViewSet)

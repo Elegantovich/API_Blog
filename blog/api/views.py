@@ -1,21 +1,22 @@
-from rest_framework import status, viewsets, mixins
-from rest_framework.views import APIView
-from .models import Post, User, Blog, Follow, Read, Date
-from api.serializers import (PostSerializer, BlogSerializer,
-                             FollowsSerializer)
-from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework.response import Response
-from rest_framework.generics import get_object_or_404
-from django.contrib.auth.hashers import check_password
-from .permissions import AuthorOrAdminOrReadonly
-from .constant import MESSAGE
-from .pagination import CustomPagination
-from blog.sent_mail import send_message_to_mail
-from rest_framework.permissions import AllowAny
 from datetime import datetime
-from rest_framework.decorators import permission_classes as permission
+
+from api.serializers import BlogSerializer, FollowsSerializer, PostSerializer
+from blog.sent_mail import send_message_to_mail
+from django.contrib.auth.hashers import check_password
+from rest_framework import mixins, status, viewsets
+from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import AccessToken
+
+from .constant import MESSAGE
+from .models import Blog, Date, Follow, Post, Read, User
+from .pagination import CustomPagination
+from .permissions import AuthorOrAdminOrReadonly
 
 now = datetime.now().strftime("%Y-%m-%d")
+
 
 class PostViewSet(viewsets.ModelViewSet):
     """
@@ -24,7 +25,6 @@ class PostViewSet(viewsets.ModelViewSet):
     permission_classes = (AuthorOrAdminOrReadonly,)
     serializer_class = PostSerializer
     lookup_field = 'pk'
-
 
     def get_queryset(self):
         blog = get_object_or_404(Blog, id=self.kwargs.get('blog_id'))
@@ -38,7 +38,8 @@ class PostViewSet(viewsets.ModelViewSet):
             last_post = Post.objects.order_by("-id")[0:5]
             all_users = User.objects.all()
             for user in all_users:
-                send_message_to_mail('defaul@ru.ru', user.first_name, last_post)
+                send_message_to_mail('defaul@ru.ru', user.first_name,
+                                     last_post)
             Date.objects.create(date=now)
 
 
@@ -67,7 +68,8 @@ class NewsView(APIView, CustomPagination):
             posts = i.posts.all()
             for item in posts:
                 post = get_object_or_404(Post, id=item.id)
-                read_obj = Read.objects.filter(user=request.user, post=post).exists()
+                read_obj = Read.objects.filter(user=request.user,
+                                               post=post).exists()
                 if read_obj:
                     post.is_read = True
                     post.save()
@@ -79,7 +81,6 @@ class NewsView(APIView, CustomPagination):
         serializer = PostSerializer(results, many=True)
 
         return self.get_paginated_response(serializer.data)
-
 
 
 def get_tokens_for_user(user):
@@ -95,6 +96,7 @@ class RecieveToken(APIView):
     Recieve token for authorization and create blog.
     """
     permission_classes = [AllowAny]
+
     def post(self, request):
         try:
             username = request.data['username']
@@ -110,8 +112,7 @@ class RecieveToken(APIView):
         if not pass_encrypted_valid:
             if password != user.password:
                 return Response({'response': 'Error! Passwords do not match!'},
-                                status=status.HTTP_400_BAD_REQUEST
-            )
+                                status=status.HTTP_400_BAD_REQUEST)
         response = {'auth_token': get_tokens_for_user(user)}
         return Response(response, status=status.HTTP_200_OK)
 
@@ -124,7 +125,7 @@ class FollowView(APIView):
         user = request.user.username
         blog = get_object_or_404(Blog, id=blog_id)
         follow = {'user': request.user,
-                'blog': blog}
+                  'blog': blog}
         if user == blog.author.username:
             return Response(
                 {'response': 'You not can subscribe to yourself!'},
@@ -144,6 +145,7 @@ class FollowView(APIView):
         follow.delete()
         return Response({'response': 'Removed!'},
                         status=status.HTTP_204_NO_CONTENT)
+
 
 class ReadView(NewsView):
     """

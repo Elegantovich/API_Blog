@@ -1,10 +1,7 @@
-from .models import Follow, Post, User, Blog, Read
 from rest_framework import serializers
-from rest_framework.generics import get_object_or_404
-from django.contrib.auth.hashers import check_password
-from rest_framework import status
-from rest_framework.response import Response
-    
+
+from .models import Blog, Follow, Post, User
+
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -29,6 +26,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         exclude = ('date_create',)
         model = Post
+
 
 class FollowsSerializer(serializers.ModelSerializer):
 
