@@ -105,7 +105,7 @@ exit
 ```
 docker container ls
 ```
-- зайдите в 'web' контейнер по его id:
+- зайдите в `web` контейнер по его id:
 ```
 docker exec -it <id_container> bash
 ```
