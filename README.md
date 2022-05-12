@@ -2,7 +2,7 @@
 Api service for blog
 
 ### Tech
-Python 3.7, Django 3.2, Rest Framework 3.13, Docker, Postman
+Python 3.7, Django 3.2, Rest Framework 3.13, Docker, Postman, PostgreSQL, nginx
 
 ## Описание.
 
