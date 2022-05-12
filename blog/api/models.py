@@ -3,6 +3,7 @@ from django.db import models
 
 
 class Date(models.Model):
+
     date = models.DateField(
         auto_now_add=True,
         verbose_name='Date of create post'
@@ -114,6 +115,7 @@ class Post(models.Model):
 
 
 class Follow(models.Model):
+
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -130,6 +132,7 @@ class Follow(models.Model):
 
 
 class Read(models.Model):
+
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,

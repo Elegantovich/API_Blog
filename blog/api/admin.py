@@ -5,7 +5,8 @@ LIST_MODELS = [
     models.User,
     models.Post,
     models.Blog,
-    models.Read
+    models.Read,
+    models.Date
 ]
 
 admin.site.register(LIST_MODELS)

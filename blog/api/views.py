@@ -15,6 +15,7 @@ from .models import Blog, Date, Follow, Post, Read, User
 from .pagination import CustomPagination
 from .permissions import AuthorOrAdminOrReadonly
 
+
 now = datetime.now().strftime("%Y-%m-%d")
 
 
@@ -22,7 +23,6 @@ class PostViewSet(viewsets.ModelViewSet):
     """
     ViewSet for Post model.
     """
-    permission_classes = (AuthorOrAdminOrReadonly,)
     serializer_class = PostSerializer
     lookup_field = 'pk'
 
@@ -35,24 +35,50 @@ class PostViewSet(viewsets.ModelViewSet):
         blog = Blog.objects.get(author=self.request.user)
         serializer.save(blog=blog)
         if not obj:
-            last_post = Post.objects.order_by("-id")[0:5]
-            all_users = User.objects.all()
-            for user in all_users:
-                send_message_to_mail('defaul@ru.ru', user.first_name,
-                                     last_post)
-            Date.objects.create(date=now)
+            if Post.objects.count() < 5:
+                pass
+            else:
+                last_post = Post.objects.order_by("-id")[0:5]
+                all_users = User.objects.all()
+                for user in all_users:
+                    send_message_to_mail('defaul@ru.ru', user.username,
+                                         last_post)
+                Date.objects.create()
+
+    def perform_update(self, serializer):
+        blog = Blog.objects.get(author=self.request.user)
+        id = self.kwargs.get('pk')
+        post = get_object_or_404(Post, id=id)
+        if blog.id != post.blog.id:
+            print(blog.id, post.blog.id)
+            return Response({'response': 'Error!'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        serializer.save(blog=blog)
+
+    def perform_destroy(self, instance):
+        blog = Blog.objects.get(author=self.request.user)
+        id = self.kwargs.get('pk')
+        post = get_object_or_404(Post, id=id)
+        if blog.id != post.blog.id:
+            print(blog.id, post.blog.id)
+            return Response({'response': 'Error!'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        instance.delete()
 
 
-class ListRetrieveViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
-                          mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class ListRetrieveUpdateViewSet(mixins.ListModelMixin,
+                                mixins.RetrieveModelMixin,
+                                mixins.UpdateModelMixin,
+                                viewsets.GenericViewSet):
     pass
 
 
-class BlogViewSet(ListRetrieveViewSet):
+class BlogViewSet(ListRetrieveUpdateViewSet):
     """
     Get info by all blogs and update your blog.
     """
     serializer_class = BlogSerializer
+    permission_classes = (AuthorOrAdminOrReadonly,)
     queryset = Blog.objects.all()
     lookup_field = 'pk'
 
