@@ -50,12 +50,11 @@ docker-compose exec web python manage.py collectstatic --no-input
 http//localhost/admin/
 ```
 Создать необходимое количество объектов модели можно набором команд:
-- зайдите в web контейнер:
+- поднять список контейнеров
 ```
 docker container ls
 ```
-Создать необходимое количество объектов модели можно набором команд:
-- зайдите в web контейнер:
+- зайдите в 'web' контейнер по его id:
 ```
 docker exec -it <id_container> bash
 ```
