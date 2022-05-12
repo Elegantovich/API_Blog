@@ -96,7 +96,7 @@ exit()
 
 ### Поддерживаемы endpoints:
 
-| URL| method | Description |
+| URL| Method | Description |
 | ------ | ------ | ------ |
 | http://localhost/api/auth/token/login/ | POST | Получить токен |
 | http://localhost/api/blogs/ | GET | Получить список блогов |
