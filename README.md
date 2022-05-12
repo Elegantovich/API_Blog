@@ -17,9 +17,19 @@ Python 3.7, Django 3.2, Rest Framework 3.13, Docker, Postman
 - для [Linux](https://docs.docker.com/engine/install/ubuntu/). Отдельно потребуется установть [Docker Compose](https://docs.docker.com/compose/install/)
 
 ### Запуск проекта.
-- Склонируйте этот репозиторий в текущую папку `git clone https://github.com/Elegantovich/API_Blog/`
-- Перейдите в папку 'infra' `cd infra`
-- Создайте файл `.env` командой `touch .env` и добавьте в него переменные окружения для работы с базой данных:
+Склонируйте этот репозиторий в текущую папку
+```
+git clone https://github.com/Elegantovich/API_Blog/
+```
+Перейдите в папку 'infra'
+```
+cd infra
+```
+Создайте файл `.env` командой
+```
+touch .env
+```
+и добавьте в него переменные окружения для работы с базой данных:
 ```
 DB_ENGINE=django.db.backends.postgresql
 DB_NAME=postgres
@@ -56,7 +66,7 @@ http//localhost/admin/
 ```
 docker container ls
 ```
-- зайдите в 'web' контейнер по его id:
+- зайдите в `web` контейнер по его id:
 ```
 docker exec -it <id_container> bash
 ```
@@ -84,7 +94,7 @@ exit()
 ```
 exit
 ```
-Для дампа БД необходимо находится в диретории API_Blog.blog и ввести команду:
+Для дампа БД необходимо находится в диретории `API_Blog.blog` и ввести команду:
 ```
 ./manage.py dumpdata > db.json
 ```
@@ -123,8 +133,8 @@ exit
 - пермишены отключены на авторизации, для беспрепятственного получения токена
 - на блоги можно подписываться и отписывать
 - в случае подписки, посты блога можно посмотреть на отдельной странице news
-- посты можно помечать прочитанными. Флажок is_read отображается только на странице news
-- письма хранятся в папке sent_emails в диретории API_Blog.blog
+- посты можно помечать прочитанными. Флажок `is_read` отображается только на странице news
+- письма хранятся в папке `sent_emails` в диретории `API_Blog.blog`
 
 ### Поддерживаемые endpoints:
 
